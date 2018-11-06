@@ -55,11 +55,11 @@ $(window).load(function() {
             if(e == "1"){
 				parent.location.reload();
 			} else {
-				alert("sorry, you are not lucky. the picutre can't been uploaded.")
+				alert("对不起图片上传失败。")
 			}
 		},
 	  });
-	})
+	});
 	function getImg(){
 		img = cropper.getDataURL();
 		$('.cropped').html('');

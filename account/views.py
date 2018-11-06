@@ -79,7 +79,7 @@ def myself(request):
     userprofile = UserProfile.objects.get(user=user)
     userinfo = UserInfo.objects.get(user=user)
 
-    return render(request, 'account/myself.html', {'user': user, 'userinfo':userinfo, 'userprofile':userprofile})
+    return render(request, 'account/myself.html', {'user': user, 'userinfo': userinfo, 'userprofile': userprofile})
 
 # 编辑个人视图
 # 执行前要判断该用户是否登录，所以加上login_required装饰函数，将没有登录的用户跳转到登录页面
@@ -103,7 +103,7 @@ def myself_edit(request):
             userprofile.phone = userprofile_cd['phone']
             userinfo.school = userinfo_cd['school']
             userinfo.company = userinfo_cd['company']
-            userinfo.profession = userinfo_cd['procession']
+            userinfo.profession = userinfo_cd['profession']
             userinfo.address = userinfo_cd['address']
             userinfo.aboutme = userinfo_cd['aboutme']
             user.save()
@@ -123,3 +123,19 @@ def myself_edit(request):
                       {'user_form': user_form,
                        'userprofile_form': userprofile_form,
                        'userinfo_form': userinfo_form})
+
+# 头像上传、裁剪
+def my_image(request):
+    return render(request, 'account/imagecrop.html')
+
+# 保存头像
+@login_required(login_url='/account/login/')
+def my_image(request):
+    if request.method == 'POST':
+        img = request.POST['img']
+        userinfo = UserInfo.objects.get(user=request.user.id)
+        userinfo.photo = img
+        userinfo.save()
+        return HttpResponse('1')
+    else:
+        return render(request, 'account/imagecrop.html')

@@ -77,14 +77,14 @@ WSGI_APPLICATION = 'Django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'blog',
-        'USER': 'root',
-        'PASSWORD': '1234',
-        'HOST': 'localhost',
-        'POST': '3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'blog',
+        # 'USER': 'root',
+        # 'PASSWORD': '1234',
+        # 'HOST': 'localhost',
+        # 'POST': '3306',
     }
 }
 
@@ -131,7 +131,7 @@ STATICFILES_DIRS = (
 )
 
 # 修改系统自带的login重定向地址
-LOGIN_REDIRECT_URL = '/blog/'
+# LOGIN_REDIRECT_URL = '/blog/'
 # LOGOUT_REDIRECT_URL = '/blog/'
 
 # 配置邮件服务器
