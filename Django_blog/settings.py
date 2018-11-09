@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'account',
+    'article',
 ]
 
 MIDDLEWARE = [
@@ -132,7 +133,7 @@ STATICFILES_DIRS = (
 
 # 修改系统自带的login重定向地址
 # LOGIN_REDIRECT_URL = '/blog/'
-# LOGOUT_REDIRECT_URL = '/blog/'
+
 
 # 配置邮件服务器
 EMAIL_HOST = 'smtp.qq.com'
