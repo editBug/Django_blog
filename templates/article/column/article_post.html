@@ -1,6 +1,6 @@
 {% extends "article/base.html" %}
 {% load staticfiles %}
-{% block title %}article column{% endblock %}
+{% block title %}发布文章{% endblock %}
 {% block content %}
     <link rel="stylesheet" href="{% static 'editor/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'editor/css/editormd.css' %}">
@@ -30,15 +30,14 @@
                                    value="{{ tag.tag }}"> {{ tag.tag }}
                         </label>
                     {% empty %}
-                        <p>You have not type tags for articles. Please <a href="{% url 'article:article_tag' %}">input
-                            your tags</a></p>
+                        <p>您没有为文章输入标签。<a href="{% url 'article:article_tag' %}">点击输入标签</a></p>
                     {% endfor %}
                 </div>
             </div>
 
             <div class="row" style="margin-top: 10px;">
                 <div class="col-md-2 text-right"><span>内容:</span></div>
-                <div id="editormd" class="col-md-10 text-left">
+                <div id="editormd" class="col-md-10 text-left" style="margin-top: 10px">
                     <textarea style="display:none;" id="id_body"></textarea>
                 </div>
             </div>
@@ -56,14 +55,16 @@
             var title = $("#id_title").val();
             var column_id = $("#which_column").val();
             var body = $("#id_body").val();
-            var article_tags = [];
-            $.each($("input[name='article_tag']:checked"), function () {
-                article_tags.push($(this).val());
-            });
+            {#var article_tags = [];#}
+            {#$.each($("input[name='article_tag']:checked"), function () {#}
+            {#    article_tags.push($(this).val());#}
+            {#});
+        #}
             $.ajax({
                 url: "{% url 'article:article_post' %}",
                 type: "POST",
                 data: {"title": title, "body": body, "column_id": column_id, "tags": JSON.stringify(article_tags)},
+                {#data: {"title": title, "body": body, "column_id": column_id},#}
                 success: function (e) {
                     if (e == "1") {
                         layer.msg("successful");

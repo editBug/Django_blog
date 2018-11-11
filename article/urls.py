@@ -7,4 +7,7 @@ urlpatterns = [
     path('article-column', views.article_column, name='article_column'),
     path('rename-column', views.rename_article_column, name='rename_article_column'),
     path('del-column', views.del_article_column, name='del_article_column'),
+    path('article-post', views.article_post, name='article_post'),
+    path('article-tag', views.article_tag, name='article_tag'),
+    path('article-list', views.article_list, name='article_list'),
 ]

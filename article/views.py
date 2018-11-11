@@ -3,13 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.http import HttpResponse
+import json
 
-from .models import ArticleColumn
-from .forms import ArtileColumnForm
+from .models import ArticleColumn, ArticlePost, ArticleTag
+from .forms import ArtileColumnForm, ArticlePostForm, ArticleTagForm
 
 
-# Create your views here.
-
+# 显示栏目
 @login_required(login_url='/account/login/')
 @csrf_exempt
 def article_column(request):
@@ -27,6 +27,7 @@ def article_column(request):
             return HttpResponse('1')
 
 
+# 编辑栏目
 @login_required(login_url='/account/login/')
 # 保证此函数只接收POST方式提交的数据
 @require_POST
@@ -43,6 +44,7 @@ def rename_article_column(request):
         return HttpResponse('0')
 
 
+# 删除栏目
 @login_required(login_url='/account/login/')
 @require_POST
 @csrf_exempt
@@ -54,3 +56,45 @@ def del_article_column(request):
         return HttpResponse('1')
     except:
         return HttpResponse('2')
+
+
+# 文章发布
+@login_required(login_url='/account/login/')
+@csrf_exempt
+def article_post(request):
+    if request.method == 'post':
+        article_post_form = ArtileColumnForm(data=request.POST)
+        if article_post_form.is_valid():
+            try:
+                new_article = article_post_form.save(commit=False)
+                new_article.author = request.user
+                new_article.column = request.user.article_column.get(id=request.POST['column_id'])
+                new_article.save()
+                tags = request.POST['tags']
+                if tags:
+                    for atag in json.loads(tags):
+                        tag = request.user.tag.get(tag=atag)
+                        new_article.article_tag.add(tag)
+                return HttpResponse('1')
+
+            except:
+                return HttpResponse('2')
+        else:
+            return HttpResponse('3')
+    else:
+        article_post_form = ArticlePostForm()
+        article_columns = request.user.article_column.all()
+        article_tags = request.user.tag.all()
+        return render(request, 'article/column/article_post.html', {'article_post_form': article_post_form,
+                                                                    'article_columns': article_columns,
+                                                                    'article_tags': article_tags})
+
+
+def article_tag(request):
+    pass
+
+
+@login_required(login_url='/account/login/')
+def article_list(request):
+    articles = ArticlePost.objects.filter(author=request.user)
+    return render(request, 'article/column/article_list.html', {'articles': articles})
